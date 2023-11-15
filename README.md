@@ -4,10 +4,10 @@ Repository for the training of Go language.
 ## Description
 
 The project contains:
-- use gorilla/mux to add route
+- use go-chi/chi to add route
 - add a handler function to
     - convert name to title case
-    - say hello to the name
+    - write JSON of httpcode, message with welcome name and time.
 
 ## Getting Started
 
