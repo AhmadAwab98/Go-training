@@ -31,7 +31,7 @@ func main() {
 	r.Get("/object/{id}", handler.GetOwnersbyId(db))
 	r.Post("/object", handler.CreateOwner(db))
 	r.Patch("/object/{id}", handler.UpdateOwner(db))
-	// r.Delete("/object/{id}", handler.DeleteOwner(db))
+	r.Delete("/object/{id}", handler.DeleteOwner(db))
 
 	// setup http server on port 8080
 	http.Handle("/", r)

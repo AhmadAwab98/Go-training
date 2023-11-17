@@ -119,3 +119,19 @@ func UpdateOwner(db *gorm.DB) http.HandlerFunc {
 		w.Write([]byte("Updated"))
 	}
 }
+
+func DeleteOwner(db *gorm.DB) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// getting id from url 
+		ID := chi.URLParam(r, "id")
+		id ,_ := strconv.ParseUint(ID,10,64)
+
+		// using delete from owners where ID=id
+		db.Delete(&model.Owners{}, uint(id))
+
+		// display deleted on website
+		w.Write([]byte("Deleted"))
+	}
+}
