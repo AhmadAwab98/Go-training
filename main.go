@@ -28,7 +28,7 @@ func main() {
 
 	// define endpoints and associate with handler
 	r.Get("/object", handler.GetOwners(db))
-	// r.Get("/object/{id}", handler.GetOwnersbyId(db))
+	r.Get("/object/{id}", handler.GetOwnersbyId(db))
 	// r.Post("/object", handler.CreateOwner(db))
 	// r.Patch("/object/{id}", handler.UpdateOwner(db))
 	// r.Delete("/object/{id}", handler.DeleteOwner(db))

@@ -6,8 +6,8 @@ import (
 	_ "github.com/lib/pq"
 	"go-training/model"
 	"encoding/json"
-	// "github.com/go-chi/chi"
-	// "strconv"
+	"github.com/go-chi/chi"
+	"strconv"
 	"sort"
 )
 
@@ -39,6 +39,31 @@ func GetOwners(db *gorm.DB) http.HandlerFunc {
 
 		// sort the rows by id
 		sort.Sort(OwnerSorted(Owner))
+
+		// convert to json
+		jsonData, _ := json.MarshalIndent(Owner, "", "	")
+
+		// write on website
+		w.Write([]byte(jsonData))
+	}
+}
+
+func GetOwnersbyId(db *gorm.DB) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// getting id from url
+		ID := chi.URLParam(r, "id")
+		id ,_ := strconv.ParseUint(ID,10,64)
+
+		// setting id of owners to get the owner with required id
+		var Owner = model.Owners{ID: uint(id)}
+
+		// using select * from owners where ID=id
+		result := db.Find(&Owner)
+		if result.Error != nil {
+			panic(result.Error)
+		}
 
 		// convert to json
 		jsonData, _ := json.MarshalIndent(Owner, "", "	")
