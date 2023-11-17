@@ -92,3 +92,30 @@ func CreateOwner(db *gorm.DB) http.HandlerFunc {
 		w.Write([]byte("Created Owner"))
 	}
 }
+
+func UpdateOwner(db *gorm.DB) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// getting owner details from request body to update
+		decoder := json.NewDecoder(r.Body)
+		var Owner model.Owners
+
+		// getting id from url 
+		ID := chi.URLParam(r, "id")
+		id ,_ := strconv.ParseUint(ID,10,64)
+
+		// updating owner for database
+		err := decoder.Decode(&Owner)
+		if err != nil {
+			return
+		}
+		Owner.ID = uint(id)
+
+		// using update owners
+		db.Save(&Owner)
+
+		// display updated on website
+		w.Write([]byte("Updated"))
+	}
+}
