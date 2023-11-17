@@ -72,3 +72,23 @@ func GetOwnersbyId(db *gorm.DB) http.HandlerFunc {
 		w.Write([]byte(jsonData))
 	}
 }
+
+func CreateOwner(db *gorm.DB) http.HandlerFunc {
+
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		// getting owner details from request body
+		decoder := json.NewDecoder(r.Body)
+		var Owner model.Owners
+		err := decoder.Decode(&Owner)
+		if err != nil {
+			return
+		}
+
+		// using // INSERT INTO `owners`
+		db.Create(&Owner)
+
+		// display created owner on website
+		w.Write([]byte("Created Owner"))
+	}
+}
