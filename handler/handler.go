@@ -28,12 +28,22 @@ func (a OwnerSorted) Swap(i, j int) {
 func GetOwners(db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var Owner []model.Owners
+
+		// using select * from owners
 		result := db.Find(&Owner)
+
+		// error then panic
 		if result.Error != nil {
 			panic(result.Error)
 		}
+
+		// sort the rows by id
 		sort.Sort(OwnerSorted(Owner))
+
+		// convert to json
 		jsonData, _ := json.MarshalIndent(Owner, "", "	")
+
+		// write on website
 		w.Write([]byte(jsonData))
 	}
 }

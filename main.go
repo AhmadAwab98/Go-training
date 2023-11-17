@@ -26,7 +26,7 @@ func init() {
 func main() {
 	r := chi.NewRouter()
 
-	// define endpoint and associate with handler
+	// define endpoints and associate with handler
 	r.Get("/object", handler.GetOwners(db))
 	// r.Get("/object/{id}", handler.GetOwnersbyId(db))
 	// r.Post("/object", handler.CreateOwner(db))
