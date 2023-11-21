@@ -33,7 +33,7 @@ cd f\training-55
 go mod init go-training 
 ```
 
-- Remaining execution commands consult readme.md in the respective folders
+- For remaining execution commands consult readme.md in the respective folders
 
 
 ## Authors
