@@ -1,0 +1,67 @@
+# Go training 
+Repository for the training of Go language.
+
+## Description
+
+The project contains:
+- use go-chi/chi to add route
+- use golang-jwt/jwt to add authentication
+- add a handler function to
+    - convert CSV to JSON case
+    - display JSON on web
+
+## Getting Started
+
+### Language
+
+Git
+
+Go
+
+### Execution
+
+File should be executed from command line in the following way:
+- First goto the directory where code resides
+```
+cd go-training
+```
+
+- Run the go mod init command to initialize a new module in the current directory
+```
+go mod init go-training 
+```
+
+- Run the go mod tidy command to add any missing dependencies to the go.mod file
+```
+go mod tidy
+```
+
+- Run the go file
+```
+ go run CSVtoJSON.go
+```
+
+- On the Postman set the method to Get, write localhost:8080/auth/signin in URL field and in the body write
+```
+{
+    "Username": "Awwab9",
+    "Password": "KhanAwab"
+}
+```
+
+- Click send, if not authenticated you will get Unauthorized
+
+- After that on the Postman set the method to Get, write localhost:8080/CSV in URL field and in the body write
+```
+{
+    "CSVFilepath": "data.csv"
+}
+```
+
+- Click send, if authenticated you will see the result in the body tag of the output
+  
+- If not authorized you can visit localhost:8080/guest. You will see a JSON body response of Hello, guest and time
+
+## Authors
+
+Ahmad Awab
