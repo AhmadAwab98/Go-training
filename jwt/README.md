@@ -28,7 +28,7 @@ go mod tidy
 
 - Run the go file
 ```
- go run CSVtoJSON.go
+ go run jwt.go
 ```
 
 - On the Postman set the method to Get, write localhost:8080/auth/signin in URL field and in the body write
