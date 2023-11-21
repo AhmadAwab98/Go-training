@@ -28,7 +28,7 @@ go mod tidy
 
 - Run the go file
 ```
- go run Greetings.go
+ go run greetings.go
 ```
 
 - On the Postman set the method to Get/Post, write localhost:8080/hello in URL field and in the body write
