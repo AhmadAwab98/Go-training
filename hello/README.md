@@ -28,7 +28,7 @@ go mod tidy
 
 - Run the go file
 ```
- go run Greetings.go
+ go run greetings.go
 ```
 
 - On the browser go to localhost:8080/hello/name, replace name with the desired name
