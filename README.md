@@ -25,7 +25,7 @@ Go
 File should be executed from command line in the following way:
 - First goto the directory where code resides
 ```
-cd f\training-55
+cd hello
 ```
 
 - Run the go mod init command to initialize a new module in the current directory
