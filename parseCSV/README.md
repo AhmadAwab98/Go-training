@@ -24,7 +24,7 @@ Continued commands from main readme.md
 
 - Run the go file with filepath as argument
 ```
- go run CSVToJSON.go path/to/data.csv
+ go run parsecsv.go path/to/data.csv
 ```
 
 ## Authors
