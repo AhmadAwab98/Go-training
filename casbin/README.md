@@ -31,7 +31,7 @@ go mod tidy
 
 - Run the go file
 ```
- go run main.go
+ go run casbinauthz.go
 ```
 
 - In the authorization tab of postman write admin and its password for full access, khan for only get requests and any other for no access.
