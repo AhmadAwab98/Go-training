@@ -30,7 +30,7 @@ go mod tidy
 
 - Run the go file
 ```
- go run main.go
+ go run crud.go
 ```
 
 #### Select all
