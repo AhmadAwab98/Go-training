@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"github.com/go-chi/chi"
-	"go-assignment/handler"
+	"go-training/handler"
 )
 
 func main() {
