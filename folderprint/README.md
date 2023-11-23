@@ -5,6 +5,8 @@ Repository for the training of Go language.
 
 The project contains:
 - list all files and folders in a given path
+- cache it for 5 minutes using redis
+- docker-compose.yml file for redis server
 
 ## Getting Started
 
@@ -16,16 +18,7 @@ Go
 
 ### Execution
 
-File should be executed from command line in the following way:
-- First goto the directory where code resides
-```
-cd folderprint
-```
-
-- Run the go mod init command to initialize a new module in the current directory
-```
-go mod init go-assignment
-```
+Continued commands from main readme.md
 
 - Run the go mod tidy command to add any missing dependencies to the go.mod file
 ```
@@ -50,4 +43,3 @@ go mod tidy
 ## Authors
 
 Ahmad Awab
-
