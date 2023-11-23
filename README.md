@@ -11,6 +11,7 @@ The project contains:
 - added JWT authentication to CSV parser
 - simple CRUD application using gorm
 - added casbin authorization to CRUD application
+- listed all folders and files in the given folder using go-chi/chi and redis
 
 ## Getting Started
 
