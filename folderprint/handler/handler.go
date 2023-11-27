@@ -22,7 +22,7 @@ var ctx = context.Background()
 var rdb *redis.Client
 func init() {
 	rdb = redis.NewClient(&redis.Options{
-		Addr: "localhost:6379", Password: "", DB: 0,
+		Addr: "redis:6379", Password: "", DB: 0,
 	})
 }
 
@@ -48,20 +48,20 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
     }
 	responseCache := GetMD5Hash(request.Path)
 
-	var response bodyResponse//, cache bodyResponse
+	var response, cache bodyResponse
 
-	// exists, _ := rdb.Exists(ctx,responseCache).Result()
+	exists, _ := rdb.Exists(ctx,responseCache).Result()
 
-	// if exists == 1{
-	// 	// get the response from cache and convert it into json format
-	// 	responsecached, _ := rdb.HGetAll(ctx,responseCache).Result()
-	// 	err = json.Unmarshal([]byte(responsecached["cachedData"]), &cache)
-	// 	JSONresponse1, _ := json.MarshalIndent(cache, "", "	")
-	// 	// respond to client using cache
-	//  w.Header().Set("Content-Type", "application/json")
-	// 	w.Write([]byte(JSONresponse1))
-	// 	return
-	// }
+	if exists == 1{
+		// get the response from cache and convert it into json format
+		responsecached, _ := rdb.HGetAll(ctx,responseCache).Result()
+		err = json.Unmarshal([]byte(responsecached["cachedData"]), &cache)
+		JSONresponse1, _ := json.MarshalIndent(cache, "", "	")
+		// respond to client using cache
+	 w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(JSONresponse1))
+		return
+	}
 
 	// prepare response
 	recPrepareResponse(request.Path, &response)

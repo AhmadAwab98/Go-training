@@ -1,8 +1,14 @@
 version: '3'
-
 services:
-  go-assignment:
-    image: redis:latest
-    container_name: redis-container
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:latest"
     ports:
       - "6379:6379"
