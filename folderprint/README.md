@@ -10,12 +10,6 @@ The project contains:
 
 ## Getting Started
 
-### Language
-
-Git
-
-Go
-
 ### Execution
 
 Continued commands from main readme.md
