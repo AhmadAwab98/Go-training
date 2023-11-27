@@ -33,8 +33,8 @@ type bodyRequest struct {
 
 // represent JSON structure of response body
 type bodyResponse struct {
-	Folders []string `json:"folders" redis:"folders"`
-	Files []string `json:"files" redis:"files"`
+	Name string `json:"Name" redis:"Name"`
+	Contents []bodyResponse `json:"Contents,omitempty" redis:"Contents"`
 }
 
 func ListHandler(w http.ResponseWriter, r *http.Request) {
@@ -48,19 +48,20 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
     }
 	responseCache := GetMD5Hash(request.Path)
 
-	var response, cache bodyResponse
+	var response bodyResponse//, cache bodyResponse
 
-	exists, _ := rdb.Exists(ctx,responseCache).Result()
+	// exists, _ := rdb.Exists(ctx,responseCache).Result()
 
-	if exists == 1{
-		// get the response from cache and convert it into json format
-		responsecached, _ := rdb.HGetAll(ctx,responseCache).Result()
-		err = json.Unmarshal([]byte(responsecached["cachedData"]), &cache)
-		JSONresponse1, _ := json.MarshalIndent(cache, "", "	")
-		// respond to client using cache
-		w.Write([]byte(JSONresponse1))
-		return
-	}
+	// if exists == 1{
+	// 	// get the response from cache and convert it into json format
+	// 	responsecached, _ := rdb.HGetAll(ctx,responseCache).Result()
+	// 	err = json.Unmarshal([]byte(responsecached["cachedData"]), &cache)
+	// 	JSONresponse1, _ := json.MarshalIndent(cache, "", "	")
+	// 	// respond to client using cache
+	//  w.Header().Set("Content-Type", "application/json")
+	// 	w.Write([]byte(JSONresponse1))
+	// 	return
+	// }
 
 	// prepare response
 	recPrepareResponse(request.Path, &response)
@@ -81,6 +82,7 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// respond to client using actual data
+	w.Header().Set("Content-Type", "application/json")
 	w.Write([]byte(JSONresponse))
 	return
 }
@@ -95,19 +97,21 @@ func recPrepareResponse(Path string, response *bodyResponse) {
 		// if broken or not opening return
 		return
 	case info.IsDir():
-		// add the folder in folders array of response 
-		response.Folders = append(response.Folders, name[len(name) - 1])
+		// add the folder to content 
+		response.Name = name[len(name) - 1]
 		files, err := os.ReadDir(Path)
 		if err != nil {
 			return
 		}
 		for _, file := range files {
 			// call the function recursively on every directory
-			recPrepareResponse(filepath.Join(Path, file.Name()), response)
+			var subResponse bodyResponse
+			recPrepareResponse(filepath.Join(Path, file.Name()), &subResponse)
+			response.Contents = append(response.Contents, subResponse)
 		}
 	default:
-		// add the files in files array of response 
-		response.Files = append(response.Files, name[len(name) - 1])
-		return
+		// add files to content
+		response.Name = name[len(name) - 1]
 	}
+	return
 }
