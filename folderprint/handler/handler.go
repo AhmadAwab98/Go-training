@@ -8,8 +8,16 @@ import (
 	"strings"
 	"github.com/redis/go-redis/v9"
 	"context"
+	"fmt"
 	"time"
+	"crypto/md5"
+    "encoding/hex"
 )
+
+func GetMD5Hash(text string) string {
+   hash := md5.Sum([]byte(text))
+   return hex.EncodeToString(hash[:])
+}
 var ctx = context.Background()
 var rdb *redis.Client
 func init() {
@@ -30,7 +38,7 @@ type bodyResponse struct {
 }
 
 func ListHandler(w http.ResponseWriter, r *http.Request) {
-	defer rdb.Close()
+
 	// decode JSON into bodyRequest
 	decoder := json.NewDecoder(r.Body)
 	var request bodyRequest
@@ -38,8 +46,21 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
         return
     }
+	responseCache := GetMD5Hash(request.Path)
 
-	var response bodyResponse
+	var response, cache bodyResponse
+
+	exists, _ := rdb.Exists(ctx,responseCache).Result()
+
+	if exists == 1{
+		// get the response from cache and convert it into json format
+		responsecached, _ := rdb.HGetAll(ctx,responseCache).Result()
+		err = json.Unmarshal([]byte(responsecached["cachedData"]), &cache)
+		JSONresponse1, _ := json.MarshalIndent(cache, "", "	")
+		// respond to client using cache
+		w.Write([]byte(JSONresponse1))
+		return
+	}
 
 	// prepare response
 	recPrepareResponse(request.Path, &response)
@@ -51,16 +72,17 @@ func ListHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// caching response for 5 minutes
-	err = rdb.HSet(ctx, "responseCache", "cachedData", JSONresponse).Err()
-	err = rdb.Expire(ctx, "responseCache", 5*time.Minute).Err()
+	err = rdb.HSet(ctx, responseCache, "cachedData", JSONresponse).Err()
+	err = rdb.Expire(ctx, responseCache, 5*time.Minute).Err()
 
-	// get the response from cache and convert it into json format
-	responsecached, _ := rdb.HGetAll(ctx,"responseCache").Result()
-	err = json.Unmarshal([]byte(responsecached["cachedData"]), &response)
-	JSONresponse, errjson = json.MarshalIndent(response, "", "	")
+	if(err != nil) {
+		fmt.Println(err)
+		return
+	}
 
-	// respond to client
+	// respond to client using actual data
 	w.Write([]byte(JSONresponse))
+	return
 }
 
 func recPrepareResponse(Path string, response *bodyResponse) {
