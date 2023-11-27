@@ -25,6 +25,11 @@ Continued commands from main readme.md
 go mod tidy
 ```
 
+- Run docker-compose up to start redis-server
+```
+docker-compose up
+```
+
 - Run the go file
 ```
  go run ffprint.go
