@@ -19,14 +19,9 @@ Continued commands from main readme.md
 go mod tidy
 ```
 
-- Run docker-compose up to start redis-server
+- Run docker-compose up to start redis-server and run the project
 ```
 docker-compose up
-```
-
-- Run the go file
-```
- go run ffprint.go
 ```
 
 - On the Postman set the method to Get/Post, write localhost:8080/hello in URL field and in the body write
