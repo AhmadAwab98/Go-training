@@ -6,7 +6,9 @@ Repository for the training of Go language.
 The project contains:
 - list all files and folders in a given path
 - cache it for 5 minutes using redis
-- docker-compose.yml file for redis server
+- docker-compose.yml file for
+    - starting redis server
+    - running the project
 
 ## Getting Started
 
