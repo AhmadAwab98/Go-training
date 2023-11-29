@@ -15,12 +15,6 @@ The project contains:
 
 ## Getting Started
 
-### Language
-
-Git
-
-Go
-
 ### Execution
 
 File should be executed from command line in the following way:
